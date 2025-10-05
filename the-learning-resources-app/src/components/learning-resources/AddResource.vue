@@ -1,4 +1,7 @@
 <template>
+  <base-dialog v-if="isInvalidInput" title="Invalid Input" @close="closeDialog">
+    <template #default> Input fields can not be empty </template>
+  </base-dialog>
   <base-card>
     <form @submit.prevent>
       <div class="form-control">
@@ -30,13 +33,34 @@
 <script>
 export default {
   emits: ["add-resource"],
+  data() {
+    return {
+      isInvalidInput: false,
+    };
+  },
   methods: {
     addResource() {
+      const title = this.$refs.title.value;
+      const description = this.$refs.description.value;
+      const link = this.$refs.link.value;
+
+      if (
+        title.trim() === "" ||
+        description.trim() === "" ||
+        link.trim() === ""
+      ) {
+        this.isInvalidInput = true;
+        return;
+      }
+
       this.$emit("add-resource", {
         title: this.$refs.title.value,
         description: this.$refs.description.value,
         link: this.$refs.link.value,
       });
+    },
+    closeDialog() {
+      this.isInvalidInput = false;
     },
   },
 };

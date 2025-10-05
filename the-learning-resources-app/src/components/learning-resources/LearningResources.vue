@@ -19,8 +19,8 @@
 
 <script>
 export default {
-  inject: ["storedResources"],
   emits: ["delete-resource"],
+  inject: ["storedResources"],
   methods: {
     deleteResource(id) {
       this.$emit("delete-resource", id);
